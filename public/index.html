@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ignite Deployment Site</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <span class="logo-icon">&#9889;</span>
+        <span class="logo-text">Ignite</span>
+      </div>
+      <nav class="nav">
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Deploy with <span class="highlight">Ignite</span></h1>
+      <p class="hero-sub">Fast, reliable, and effortless deployments — from code to live in seconds.</p>
+      <div class="hero-actions">
+        <a href="#features" class="btn btn-primary">Get Started</a>
+        <a href="#about" class="btn btn-outline">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2>Why Ignite?</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">&#128640;</div>
+          <h3>Lightning Fast</h3>
+          <p>Deployments that finish in seconds, not minutes. Optimized pipelines for maximum speed.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128274;</div>
+          <h3>Secure by Default</h3>
+          <p>Every deployment is encrypted and isolated. Your code and data stay safe.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128200;</div>
+          <h3>Always Available</h3>
+          <p>99.9% uptime SLA. Built on resilient infrastructure that scales with you.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128736;</div>
+          <h3>Zero Config</h3>
+          <p>Smart defaults that just work. No YAML headaches or complex configuration files.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="container about-grid">
+      <div class="about-text">
+        <h2>Built for developers</h2>
+        <p>Ignite was created to remove friction from the deployment process. Whether you're shipping a side project or running a production application, Ignite gives you the tools to move fast without breaking things.</p>
+        <p>From auto-scaling to instant rollbacks, every feature is designed with the developer experience in mind.</p>
+      </div>
+      <div class="about-visual">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="terminal-body">
+            <div class="line"><span class="prompt">$</span> git push origin main</div>
+            <div class="line output">&#10003; Build complete (4.2s)</div>
+            <div class="line output">&#10003; Tests passed (1.8s)</div>
+            <div class="line output">&#10003; Deployed to production</div>
+            <div class="line blink">&#9646;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2>Get in touch</h2>
+      <p>Have questions? We'd love to hear from you.</p>
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <input type="text" placeholder="Your name" required />
+        <input type="email" placeholder="Your email" required />
+        <textarea placeholder="Your message" rows="4" required></textarea>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+      <p id="form-msg" class="form-msg" style="display:none;">Thanks! We'll be in touch soon.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Ignite Deployment. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

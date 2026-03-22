@@ -372,6 +372,160 @@ document.querySelectorAll('.cp-tab').forEach(tab => {
   });
 });
 
+// ===================== IMPORT SESSION =====================
+function switchToSessionTab() {
+  document.querySelectorAll('.cp-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.cp-content').forEach(c => c.classList.remove('active'));
+  const sessionTab = document.querySelector('.cp-tab[data-cptab="session"]');
+  if (sessionTab) sessionTab.classList.add('active');
+  const sessionContent = document.getElementById('cptab-session');
+  if (sessionContent) sessionContent.classList.add('active');
+  const sidDisp = document.getElementById('sidDisplay');
+  if (sidDisp) {
+    sidDisp.style.transition = 'background 0.4s';
+    sidDisp.style.background = 'rgba(74,222,128,0.15)';
+    setTimeout(() => { sidDisp.style.background = ''; }, 2000);
+  }
+}
+
+async function pasteFromClipboard() {
+  try {
+    const text = await navigator.clipboard.readText();
+    const ta = document.getElementById('importSidInput');
+    if (ta) {
+      ta.value = text;
+      ta.dispatchEvent(new Event('input'));
+    }
+  } catch (e) {
+    showImportError('Could not access clipboard. Please paste manually (Ctrl+V / Cmd+V).');
+  }
+}
+
+function parseImportedSession(raw) {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+
+  // Try JSON — some pairing sites return session as JSON
+  try {
+    const obj = JSON.parse(trimmed);
+    if (obj && typeof obj === 'object') {
+      const key = Object.keys(obj).find(k => /session|id|creds|key/i.test(k));
+      if (key && typeof obj[key] === 'string') return obj[key];
+      return trimmed;
+    }
+  } catch (_) {}
+
+  // Base64-encoded string (longer than 20 chars, alphanumeric + /+=)
+  if (/^[A-Za-z0-9+/=]{20,}$/.test(trimmed)) return trimmed;
+
+  // NXB-XXXX-XXXX-XXXX-XXXX format
+  if (/^NXB-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(trimmed)) return trimmed;
+
+  // Any string longer than 8 chars — accept as-is
+  if (trimmed.length >= 8) return trimmed;
+
+  return null;
+}
+
+function truncateForDisplay(str, maxLen = 48) {
+  if (!str) return '';
+  if (str.length <= maxLen) return str;
+  return str.slice(0, 20) + '...' + str.slice(-12);
+}
+
+const importInput = document.getElementById('importSidInput');
+if (importInput) {
+  importInput.addEventListener('input', () => {
+    const raw = importInput.value;
+    const previewEl = document.getElementById('importPreview');
+    const previewVal = document.getElementById('importPreviewVal');
+    const errEl = document.getElementById('importError');
+    const successEl = document.getElementById('importSuccess');
+
+    if (errEl) errEl.style.display = 'none';
+    if (successEl) successEl.style.display = 'none';
+
+    if (!raw.trim()) {
+      if (previewEl) previewEl.style.display = 'none';
+      return;
+    }
+
+    const parsed = parseImportedSession(raw);
+    if (parsed && previewEl && previewVal) {
+      previewEl.style.display = 'block';
+      previewVal.textContent = truncateForDisplay(parsed);
+    } else if (previewEl) {
+      previewEl.style.display = 'none';
+    }
+  });
+}
+
+function showImportError(msg) {
+  const el = document.getElementById('importError');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
+}
+
+function clearImport() {
+  const ta = document.getElementById('importSidInput');
+  if (ta) ta.value = '';
+  const previewEl = document.getElementById('importPreview');
+  if (previewEl) previewEl.style.display = 'none';
+  const errEl = document.getElementById('importError');
+  if (errEl) errEl.style.display = 'none';
+  const successEl = document.getElementById('importSuccess');
+  if (successEl) successEl.style.display = 'none';
+}
+
+function applyImportedSession() {
+  const raw = (document.getElementById('importSidInput') || {}).value || '';
+  const errEl = document.getElementById('importError');
+  const successEl = document.getElementById('importSuccess');
+
+  if (errEl) errEl.style.display = 'none';
+  if (successEl) successEl.style.display = 'none';
+
+  if (!raw.trim()) {
+    showImportError('Please paste a session ID first.');
+    return;
+  }
+
+  const parsed = parseImportedSession(raw);
+  if (!parsed) {
+    showImportError('Could not detect a valid session ID. Make sure you copied the full session string from the pairing site.');
+    return;
+  }
+
+  // Store the full imported session string as the active session
+  importedSession = parsed;
+
+  // If it looks like a NXB-format ID, strip prefix and use as currentSid display
+  if (/^NXB-/i.test(parsed)) {
+    currentSid = parsed.replace(/^NXB-/i, '');
+    renderSid();
+  } else {
+    // For long base64/JSON sessions, show a shortened display hash
+    currentSid = shortHash(parsed);
+    renderSid();
+  }
+
+  if (successEl) successEl.style.display = 'flex';
+}
+
+let importedSession = '';
+
+function shortHash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) { h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
+  const hex = Math.abs(h).toString(16).toUpperCase().padStart(8, '0');
+  return hex.slice(0,4) + '-' + hex.slice(4,8) + '-' + shortAlpha(str);
+}
+function shortAlpha(str) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let out = '';
+  for (let i = 0; i < 8; i++) out += chars[(str.charCodeAt(i % str.length) + i * 7) % chars.length];
+  return out.slice(0,4) + '-' + out.slice(4);
+}
+
 // ===================== ADMIN PHONE =====================
 function savePhone() {
   const country = document.getElementById('phoneCountry').value;

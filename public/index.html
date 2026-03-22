@@ -3,108 +3,567 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ignite Deployment Site</title>
+  <title>NexusBot — Intelligent Deployment Automation</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <span class="logo-icon">&#9889;</span>
-        <span class="logo-text">Ignite</span>
-      </div>
-      <nav class="nav">
-        <a href="#features">Features</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="container">
-      <h1>Deploy with <span class="highlight">Ignite</span></h1>
-      <p class="hero-sub">Fast, reliable, and effortless deployments — from code to live in seconds.</p>
-      <div class="hero-actions">
-        <a href="#features" class="btn btn-primary">Get Started</a>
-        <a href="#about" class="btn btn-outline">Learn More</a>
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="18" fill="url(#lg)"/>
+          <path d="M11 14h14M11 18h14M11 22h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="26" cy="22" r="3" fill="#a78bfa"/>
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
+        </svg>
+        <span>Nexus<span class="logo-accent">Bot</span></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#howitworks" class="nav-link">How It Works</a>
+        <a href="#commands" class="nav-link">Commands</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#docs" class="nav-link">Docs</a>
+        <a href="#contact" class="btn btn-sm btn-outline">Contact</a>
+        <a href="#get-started" class="btn btn-sm btn-primary">Get Started</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <div class="badge"><span class="badge-dot"></span> v2.0 — Now with AI-powered rollbacks</div>
+        <h1>Deploy Smarter with <span class="gradient-text">NexusBot</span></h1>
+        <p class="hero-sub">NexusBot automates your entire deployment pipeline — from CI/CD orchestration to zero-downtime releases, container scaling, and instant rollbacks. One bot to rule your infrastructure.</p>
+        <div class="hero-actions">
+          <a href="#get-started" class="btn btn-primary btn-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            Get Started Free
+          </a>
+          <a href="#demo" class="btn btn-ghost btn-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M10 8l6 4-6 4V8z" fill="currentColor"/></svg>
+            Watch Demo
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-n">50K+</span><span class="stat-l">Deployments/day</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-n">99.99%</span><span class="stat-l">Uptime SLA</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-n">8ms</span><span class="stat-l">Avg. response</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal-window">
+          <div class="terminal-title-bar">
+            <div class="t-dots"><span class="td red"></span><span class="td yellow"></span><span class="td green"></span></div>
+            <span class="t-title">nexusbot deploy</span>
+          </div>
+          <div class="terminal-body" id="termBody">
+            <div class="t-line"><span class="t-prompt">nexus</span><span class="t-cmd"> deploy --env production --image app:v2.4.1</span></div>
+            <div class="t-line t-out" id="tl1">&#10003; Authenticating with registry...</div>
+            <div class="t-line t-out" id="tl2">&#10003; Running pre-deploy health checks...</div>
+            <div class="t-line t-out" id="tl3">&#10003; Scaling to 4 replicas...</div>
+            <div class="t-line t-out t-ok" id="tl4">&#10003; Zero-downtime rollout complete!</div>
+            <div class="t-line t-info" id="tl5">&#10148; Live: https://app.example.com (v2.4.1)</div>
+            <div class="t-line t-info" id="tl6">&#10148; Deploy time: 12.4s &nbsp;|&nbsp; 4/4 healthy</div>
+            <div class="t-line blink-cursor" id="tl7">_</div>
+          </div>
+        </div>
+        <div class="status-card card-right">
+          <div class="sc-head"><span class="sc-dot green"></span> Production — healthy</div>
+          <div class="sc-body">
+            <div class="sc-row"><span>Replicas</span><strong>4 / 4</strong></div>
+            <div class="sc-row"><span>Version</span><strong>v2.4.1</strong></div>
+            <div class="sc-row"><span>CPU</span><strong>12%</strong></div>
+            <div class="sc-row"><span>Memory</span><strong>234 MB</strong></div>
+            <div class="sc-bar-label">Traffic</div>
+            <div class="sc-bar"><div class="sc-bar-fill" style="width:68%"></div></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- TRUSTED BY -->
+  <section class="trusted">
+    <div class="container">
+      <p class="trusted-label">Trusted by teams at</p>
+      <div class="trusted-logos">
+        <span class="tlogo">Vercel</span>
+        <span class="tlogo">Stripe</span>
+        <span class="tlogo">GitHub</span>
+        <span class="tlogo">Notion</span>
+        <span class="tlogo">Linear</span>
+        <span class="tlogo">Figma</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
   <section class="features" id="features">
     <div class="container">
-      <h2>Why Ignite?</h2>
-      <div class="cards">
-        <div class="card">
-          <div class="card-icon">&#128640;</div>
-          <h3>Lightning Fast</h3>
-          <p>Deployments that finish in seconds, not minutes. Optimized pipelines for maximum speed.</p>
+      <div class="section-head">
+        <div class="section-tag">Features</div>
+        <h2>Everything you need to ship confidently</h2>
+        <p>NexusBot integrates with your existing stack and automates the hard parts of deployment so your team can focus on building.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feat-card feat-large">
+          <div class="feat-icon purple">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Instant CI/CD Pipelines</h3>
+          <p>Auto-detect your framework and set up a complete pipeline in under 60 seconds. Supports GitHub Actions, GitLab CI, CircleCI, and Bitbucket Pipelines out of the box.</p>
+          <div class="feat-tags">
+            <span class="tag">GitHub</span><span class="tag">GitLab</span><span class="tag">CircleCI</span>
+          </div>
         </div>
-        <div class="card">
-          <div class="card-icon">&#128274;</div>
-          <h3>Secure by Default</h3>
-          <p>Every deployment is encrypted and isolated. Your code and data stay safe.</p>
+        <div class="feat-card">
+          <div class="feat-icon blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Zero-Downtime Deploys</h3>
+          <p>Rolling updates ensure your users never hit a 502. NexusBot manages traffic shifting automatically.</p>
         </div>
-        <div class="card">
-          <div class="card-icon">&#128200;</div>
-          <h3>Always Available</h3>
-          <p>99.9% uptime SLA. Built on resilient infrastructure that scales with you.</p>
+        <div class="feat-card">
+          <div class="feat-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>AI-Powered Rollbacks</h3>
+          <p>Detect anomalies in real-time and automatically roll back bad deployments before users notice.</p>
         </div>
-        <div class="card">
-          <div class="card-icon">&#128736;</div>
-          <h3>Zero Config</h3>
-          <p>Smart defaults that just work. No YAML headaches or complex configuration files.</p>
+        <div class="feat-card">
+          <div class="feat-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Scheduled Deployments</h3>
+          <p>Queue deployments for off-peak hours. Perfect for maintenance windows and batch releases.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon orange">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Real-Time Monitoring</h3>
+          <p>Live metrics, logs, and alerts streamed directly to your Slack, Discord, or webhook endpoint.</p>
+        </div>
+        <div class="feat-card feat-large">
+          <div class="feat-icon pink">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="9" height="9" rx="2" stroke="currentColor" stroke-width="2"/><rect x="13" y="2" width="9" height="9" rx="2" stroke="currentColor" stroke-width="2"/><rect x="2" y="13" width="9" height="9" rx="2" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="9" height="9" rx="2" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <h3>Multi-Cloud Orchestration</h3>
+          <p>Deploy across AWS, GCP, Azure, and bare-metal from one interface. NexusBot normalizes cloud differences so you don't have to think about them. Define once, run anywhere.</p>
+          <div class="feat-tags">
+            <span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">Azure</span><span class="tag">K8s</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="about" id="about">
-    <div class="container about-grid">
-      <div class="about-text">
-        <h2>Built for developers</h2>
-        <p>Ignite was created to remove friction from the deployment process. Whether you're shipping a side project or running a production application, Ignite gives you the tools to move fast without breaking things.</p>
-        <p>From auto-scaling to instant rollbacks, every feature is designed with the developer experience in mind.</p>
-      </div>
-      <div class="about-visual">
-        <div class="terminal">
-          <div class="terminal-bar">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-          </div>
-          <div class="terminal-body">
-            <div class="line"><span class="prompt">$</span> git push origin main</div>
-            <div class="line output">&#10003; Build complete (4.2s)</div>
-            <div class="line output">&#10003; Tests passed (1.8s)</div>
-            <div class="line output">&#10003; Deployed to production</div>
-            <div class="line blink">&#9646;</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="contact" id="contact">
+  <!-- HOW IT WORKS -->
+  <section class="howitworks" id="howitworks">
     <div class="container">
-      <h2>Get in touch</h2>
-      <p>Have questions? We'd love to hear from you.</p>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
-        <input type="text" placeholder="Your name" required />
-        <input type="email" placeholder="Your email" required />
-        <textarea placeholder="Your message" rows="4" required></textarea>
-        <button type="submit" class="btn btn-primary">Send Message</button>
+      <div class="section-head">
+        <div class="section-tag">How It Works</div>
+        <h2>From push to production in 4 steps</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Connect your repo</h3>
+            <p>Link GitHub, GitLab, or Bitbucket. NexusBot detects your stack and suggests an optimized pipeline in seconds.</p>
+          </div>
+        </div>
+        <div class="step-arrow">&#8594;</div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>Configure your target</h3>
+            <p>Pick your cloud provider, environment, scaling rules, and notification channels. Or use a template.</p>
+          </div>
+        </div>
+        <div class="step-arrow">&#8594;</div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Push & let NexusBot work</h3>
+            <p>Every push triggers your pipeline. NexusBot builds, tests, and deploys — or flags issues before they reach production.</p>
+          </div>
+        </div>
+        <div class="step-arrow">&#8594;</div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>Monitor & iterate</h3>
+            <p>Watch live metrics, receive smart alerts, and use one-click rollbacks if anything looks off.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMANDS / DOCS -->
+  <section class="commands" id="commands">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Commands</div>
+        <h2>Powerful CLI & Bot Commands</h2>
+        <p>Control NexusBot from your terminal, Slack, Discord, or any webhook.</p>
+      </div>
+      <div class="cmd-tabs">
+        <button class="cmd-tab active" data-tab="deploy">Deploy</button>
+        <button class="cmd-tab" data-tab="rollback">Rollback</button>
+        <button class="cmd-tab" data-tab="scale">Scale</button>
+        <button class="cmd-tab" data-tab="logs">Logs</button>
+        <button class="cmd-tab" data-tab="secrets">Secrets</button>
+      </div>
+      <div class="cmd-panels">
+        <div class="cmd-panel active" id="tab-deploy">
+          <div class="cmd-list">
+            <div class="cmd-item"><code>nexus deploy</code><span>Deploy the current branch to the default environment</span></div>
+            <div class="cmd-item"><code>nexus deploy --env production</code><span>Deploy to the production environment</span></div>
+            <div class="cmd-item"><code>nexus deploy --image app:v2.4</code><span>Deploy a specific Docker image tag</span></div>
+            <div class="cmd-item"><code>nexus deploy --dry-run</code><span>Preview what would be deployed without executing</span></div>
+            <div class="cmd-item"><code>nexus deploy --wait</code><span>Block until deployment is healthy or fails</span></div>
+            <div class="cmd-item"><code>nexus deploy --canary 10%</code><span>Deploy to 10% of traffic first (canary release)</span></div>
+          </div>
+        </div>
+        <div class="cmd-panel" id="tab-rollback">
+          <div class="cmd-list">
+            <div class="cmd-item"><code>nexus rollback</code><span>Roll back to the previous stable deployment</span></div>
+            <div class="cmd-item"><code>nexus rollback --to v2.3.0</code><span>Roll back to a specific version</span></div>
+            <div class="cmd-item"><code>nexus rollback --auto</code><span>Enable automatic rollback on error rate spike</span></div>
+          </div>
+        </div>
+        <div class="cmd-panel" id="tab-scale">
+          <div class="cmd-list">
+            <div class="cmd-item"><code>nexus scale --replicas 6</code><span>Scale to exactly 6 replicas</span></div>
+            <div class="cmd-item"><code>nexus scale --min 2 --max 10</code><span>Configure horizontal auto-scaling bounds</span></div>
+            <div class="cmd-item"><code>nexus scale --cpu-target 60%</code><span>Scale based on CPU utilization target</span></div>
+          </div>
+        </div>
+        <div class="cmd-panel" id="tab-logs">
+          <div class="cmd-list">
+            <div class="cmd-item"><code>nexus logs</code><span>Stream live logs from all running pods</span></div>
+            <div class="cmd-item"><code>nexus logs --tail 100</code><span>Show the last 100 log lines</span></div>
+            <div class="cmd-item"><code>nexus logs --filter ERROR</code><span>Filter logs by severity or keyword</span></div>
+          </div>
+        </div>
+        <div class="cmd-panel" id="tab-secrets">
+          <div class="cmd-list">
+            <div class="cmd-item"><code>nexus secrets set KEY=val</code><span>Set an encrypted environment secret</span></div>
+            <div class="cmd-item"><code>nexus secrets list</code><span>List all secret keys (values hidden)</span></div>
+            <div class="cmd-item"><code>nexus secrets delete KEY</code><span>Remove a secret from the environment</span></div>
+            <div class="cmd-item"><code>nexus secrets sync --from .env</code><span>Sync secrets from a local .env file</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS -->
+  <section class="integrations">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Integrations</div>
+        <h2>Connects to your entire stack</h2>
+      </div>
+      <div class="int-grid">
+        <div class="int-card"><div class="int-icon">&#128296;</div><span>GitHub</span></div>
+        <div class="int-card"><div class="int-icon">&#128202;</div><span>GitLab</span></div>
+        <div class="int-card"><div class="int-icon">&#128640;</div><span>Kubernetes</span></div>
+        <div class="int-card"><div class="int-icon">&#9729;</div><span>AWS</span></div>
+        <div class="int-card"><div class="int-icon">&#128274;</div><span>Vault</span></div>
+        <div class="int-card"><div class="int-icon">&#128172;</div><span>Slack</span></div>
+        <div class="int-card"><div class="int-icon">&#128187;</div><span>Discord</span></div>
+        <div class="int-card"><div class="int-icon">&#128200;</div><span>Datadog</span></div>
+        <div class="int-card"><div class="int-icon">&#128269;</div><span>Grafana</span></div>
+        <div class="int-card"><div class="int-icon">&#128204;</div><span>PagerDuty</span></div>
+        <div class="int-card"><div class="int-icon">&#128205;</div><span>Terraform</span></div>
+        <div class="int-card"><div class="int-icon">&#9881;</div><span>Helm</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Pricing</div>
+        <h2>Simple, transparent pricing</h2>
+        <p>No per-seat surprises. Pay for what you actually use.</p>
+        <div class="billing-toggle">
+          <span id="billingMonthly" class="billing-opt active">Monthly</span>
+          <div class="toggle-switch" id="billingToggle"><div class="toggle-knob"></div></div>
+          <span id="billingAnnual" class="billing-opt">Annual <span class="save-badge">Save 20%</span></span>
+        </div>
+      </div>
+      <div class="pricing-grid">
+        <div class="plan-card">
+          <div class="plan-name">Starter</div>
+          <div class="plan-price">
+            <span class="price-amount" data-monthly="$0" data-annual="$0">$0</span>
+            <span class="price-period">/mo</span>
+          </div>
+          <div class="plan-desc">Perfect for solo developers and side projects.</div>
+          <ul class="plan-features">
+            <li><span class="pf-check">&#10003;</span> 3 environments</li>
+            <li><span class="pf-check">&#10003;</span> 50 deploys/month</li>
+            <li><span class="pf-check">&#10003;</span> GitHub &amp; GitLab</li>
+            <li><span class="pf-check">&#10003;</span> Community support</li>
+            <li class="pf-no"><span class="pf-x">&#215;</span> Custom domains</li>
+            <li class="pf-no"><span class="pf-x">&#215;</span> AI rollbacks</li>
+          </ul>
+          <a href="#get-started" class="btn btn-outline btn-block">Start Free</a>
+        </div>
+        <div class="plan-card plan-popular">
+          <div class="popular-badge">Most Popular</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">
+            <span class="price-amount" data-monthly="$49" data-annual="$39">$49</span>
+            <span class="price-period">/mo</span>
+          </div>
+          <div class="plan-desc">For growing teams shipping fast.</div>
+          <ul class="plan-features">
+            <li><span class="pf-check">&#10003;</span> Unlimited environments</li>
+            <li><span class="pf-check">&#10003;</span> Unlimited deploys</li>
+            <li><span class="pf-check">&#10003;</span> All integrations</li>
+            <li><span class="pf-check">&#10003;</span> AI-powered rollbacks</li>
+            <li><span class="pf-check">&#10003;</span> Custom domains</li>
+            <li><span class="pf-check">&#10003;</span> Priority support</li>
+          </ul>
+          <a href="#get-started" class="btn btn-primary btn-block">Get Started</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Enterprise</div>
+          <div class="plan-price">
+            <span class="price-amount" data-monthly="Custom" data-annual="Custom">Custom</span>
+          </div>
+          <div class="plan-desc">For large teams with custom requirements.</div>
+          <ul class="plan-features">
+            <li><span class="pf-check">&#10003;</span> Everything in Pro</li>
+            <li><span class="pf-check">&#10003;</span> SSO &amp; SAML</li>
+            <li><span class="pf-check">&#10003;</span> Audit logs</li>
+            <li><span class="pf-check">&#10003;</span> SLA guarantees</li>
+            <li><span class="pf-check">&#10003;</span> Dedicated Slack channel</li>
+            <li><span class="pf-check">&#10003;</span> On-prem option</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline btn-block">Talk to Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Testimonials</div>
+        <h2>What teams are saying</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"NexusBot cut our deployment time from 25 minutes to under 2 minutes. The AI rollback saved us from a production incident we didn't even know was happening."</p>
+          <div class="testi-author"><div class="testi-avatar" style="background:#7c3aed">JM</div><div><strong>James Mitchell</strong><span>CTO at Cloudframe</span></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"We replaced four separate tools with NexusBot. Our DevOps pipeline is now fully automated and our engineers spend their time on product, not infrastructure."</p>
+          <div class="testi-author"><div class="testi-avatar" style="background:#2563eb">SR</div><div><strong>Sara Rodríguez</strong><span>Head of Engineering at Lumio</span></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"The canary deployment feature is incredible. We can push changes to 5% of traffic, watch the metrics, and then roll out globally — all from one command."</p>
+          <div class="testi-author"><div class="testi-avatar" style="background:#0891b2">AK</div><div><strong>Arjun Kumar</strong><span>Platform Engineer at Drift</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCS -->
+  <section class="docs" id="docs">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Documentation</div>
+        <h2>Get up and running in minutes</h2>
+      </div>
+      <div class="docs-grid">
+        <div class="doc-card">
+          <div class="doc-icon">&#128218;</div>
+          <h3>Quick Start</h3>
+          <p>Install NexusBot CLI and deploy your first app in 5 minutes.</p>
+          <a href="#" class="doc-link">Read guide &#8594;</a>
+        </div>
+        <div class="doc-card">
+          <div class="doc-icon">&#128736;</div>
+          <h3>CLI Reference</h3>
+          <p>Full documentation for every NexusBot command and flag.</p>
+          <a href="#" class="doc-link">View reference &#8594;</a>
+        </div>
+        <div class="doc-card">
+          <div class="doc-icon">&#128279;</div>
+          <h3>API Docs</h3>
+          <p>REST API for integrating NexusBot into your own tools and dashboards.</p>
+          <a href="#" class="doc-link">Explore API &#8594;</a>
+        </div>
+        <div class="doc-card">
+          <div class="doc-icon">&#9881;</div>
+          <h3>Configuration</h3>
+          <p>Deep-dive into nexus.yml, environments, secrets, and pipeline config.</p>
+          <a href="#" class="doc-link">Configure &#8594;</a>
+        </div>
+      </div>
+      <div class="install-box">
+        <span class="install-label">Install NexusBot CLI</span>
+        <div class="install-code">
+          <code id="installCmd">npm install -g @nexusbot/cli</code>
+          <button class="copy-btn" id="copyBtn" onclick="copyInstall()">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / GET STARTED -->
+  <section class="cta" id="get-started">
+    <div class="cta-bg">
+      <div class="cta-orb"></div>
+    </div>
+    <div class="container cta-inner">
+      <h2>Start deploying faster today</h2>
+      <p>Join 10,000+ developers and teams that trust NexusBot to ship their software reliably.</p>
+      <form class="signup-form" id="signupForm" onsubmit="handleSignup(event)">
+        <input type="email" placeholder="Enter your work email" required class="signup-input" />
+        <button type="submit" class="btn btn-primary btn-lg">Get Started Free</button>
       </form>
-      <p id="form-msg" class="form-msg" style="display:none;">Thanks! We'll be in touch soon.</p>
+      <p class="cta-note" id="signupMsg" style="display:none; color:#4ade80; font-weight:600; margin-top:1rem;">&#10003; You're on the list! We'll be in touch soon.</p>
+      <p class="cta-note">No credit card required &nbsp;·&nbsp; Free forever plan available &nbsp;·&nbsp; Cancel anytime</p>
     </div>
   </section>
 
-  <footer class="footer">
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
     <div class="container">
-      <p>&copy; 2026 Ignite Deployment. All rights reserved.</p>
+      <div class="section-head">
+        <div class="section-tag">Contact</div>
+        <h2>Get in touch</h2>
+        <p>Have questions or want a demo? We'd love to hear from you.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="ci-icon">&#128140;</div>
+            <div><strong>Sales</strong><p>sales@nexusbot.io</p></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon">&#128736;</div>
+            <div><strong>Support</strong><p>support@nexusbot.io</p></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon">&#128172;</div>
+            <div><strong>Community</strong><p>discord.gg/nexusbot</p></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon">&#127968;</div>
+            <div><strong>Office</strong><p>San Francisco, CA</p></div>
+          </div>
+        </div>
+        <form class="contact-form" onsubmit="handleContact(event)">
+          <div class="form-row">
+            <input type="text" placeholder="Your name" required />
+            <input type="email" placeholder="Work email" required />
+          </div>
+          <select>
+            <option value="">What can we help with?</option>
+            <option>Sales inquiry</option>
+            <option>Technical support</option>
+            <option>Enterprise plan</option>
+            <option>Partnership</option>
+            <option>Other</option>
+          </select>
+          <textarea placeholder="Tell us more..." rows="4" required></textarea>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-success" id="contactMsg" style="display:none;">&#10003; Message sent! We'll get back to you within 24 hours.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="nav-logo footer-logo">
+          <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="18" fill="url(#lg2)"/>
+            <path d="M11 14h14M11 18h14M11 22h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="26" cy="22" r="3" fill="#a78bfa"/>
+            <defs><linearGradient id="lg2" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
+          </svg>
+          <span>Nexus<span class="logo-accent">Bot</span></span>
+        </a>
+        <p>Intelligent deployment automation for modern teams.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="GitHub">&#128760;</a>
+          <a href="#" class="social-link" aria-label="Twitter">&#128038;</a>
+          <a href="#" class="social-link" aria-label="Discord">&#128172;</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#integrations">Integrations</a>
+          <a href="#">Changelog</a>
+        </div>
+        <div class="footer-col">
+          <h4>Developers</h4>
+          <a href="#docs">Documentation</a>
+          <a href="#">CLI Reference</a>
+          <a href="#">API</a>
+          <a href="#">Status</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Security</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 NexusBot, Inc. All rights reserved.</p>
+        <p>Made with &#9829; for developers worldwide</p>
+      </div>
     </div>
   </footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
 
   <script src="app.js"></script>
 </body>

@@ -28,22 +28,238 @@ document.querySelectorAll('.cmd-tab').forEach(tab => {
   });
 });
 
-// ===================== BILLING TOGGLE =====================
-const billingToggle = document.getElementById('billingToggle');
-const billingMonthly = document.getElementById('billingMonthly');
-const billingAnnual = document.getElementById('billingAnnual');
-let isAnnual = false;
-billingToggle.addEventListener('click', () => {
-  isAnnual = !isAnnual;
-  billingToggle.classList.toggle('on', isAnnual);
-  billingMonthly.classList.toggle('active', !isAnnual);
-  billingAnnual.classList.toggle('active', isAnnual);
-  document.querySelectorAll('.price-amount').forEach(el => {
-    el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+// ===================== M-PESA PAYMENT =====================
+let mpesaAmount = 100;
+let mpesaPlanName = 'Monthly Subscription';
+let mpesaCheckoutId = '';
+let mpesaMerchantId = '';
+let mpesaPollInterval = null;
+let mpesaCountdownTimer = null;
+let mpesaCountdownSecs = 60;
+let mpesaPhoneFormatted = '';
+
+function openMpesaModal(amount, planName) {
+  mpesaAmount = amount;
+  mpesaPlanName = planName;
+  setEl('mpAmount', amount);
+  setEl('mpPlanLabel', planName);
+  setEl('mpPlanLabel2', planName);
+  document.getElementById('mpPhone').value = '';
+  const errEl = document.getElementById('mpError');
+  if (errEl) errEl.style.display = 'none';
+  showMpStep(1);
+  document.getElementById('mpesaModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('mpPhone').focus(), 200);
+}
+
+function closeMpesaModal() {
+  cancelMpesaPoll();
+  document.getElementById('mpesaModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeMpesaModalOutside(e) {
+  if (e.target === document.getElementById('mpesaModal')) closeMpesaModal();
+}
+
+function showMpStep(n) {
+  [1,2,3,4].forEach(i => {
+    const el = document.getElementById('mpStep' + i);
+    if (el) el.style.display = i === n ? 'block' : 'none';
   });
-});
-billingMonthly.addEventListener('click', () => { if (isAnnual) billingToggle.click(); });
-billingAnnual.addEventListener('click', () => { if (!isAnnual) billingToggle.click(); });
+}
+
+function formatMpesaPhone(raw) {
+  const digits = raw.replace(/\D/g, '');
+  if (digits.startsWith('0') && digits.length >= 9) {
+    return '254' + digits.slice(1);
+  }
+  if (digits.startsWith('254') && digits.length >= 12) {
+    return digits;
+  }
+  if (digits.startsWith('7') || digits.startsWith('1')) {
+    return '254' + digits;
+  }
+  return '254' + digits;
+}
+
+async function sendStkPush() {
+  const rawPhone = document.getElementById('mpPhone').value.trim();
+  const errEl = document.getElementById('mpError');
+  errEl.style.display = 'none';
+
+  if (!rawPhone) {
+    errEl.textContent = 'Please enter your M-Pesa phone number.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const phone = formatMpesaPhone(rawPhone);
+
+  if (!/^2547\d{8}$/.test(phone) && !/^2541\d{8}$/.test(phone)) {
+    errEl.textContent = 'Enter a valid Safaricom number (07xx or 01xx), e.g. 0712345678.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  mpesaPhoneFormatted = phone;
+
+  const btn = document.getElementById('mpSendBtn');
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+
+  try {
+    const resp = await fetch('https://mpesapi.giftedtech.co.ke/api/payNexusTech.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ phoneNumber: phone, amount: mpesaAmount })
+    });
+    const data = await resp.json();
+
+    btn.disabled = false;
+    btn.style.opacity = '1';
+
+    if (data.success && data.CheckoutRequestID) {
+      mpesaCheckoutId = data.CheckoutRequestID;
+      mpesaMerchantId = data.MerchantRequestID || '';
+
+      const display = '+254 ' + phone.slice(3, 6) + ' ' + phone.slice(6, 9) + ' ' + phone.slice(9);
+      setEl('mpDisplayPhone', display);
+
+      showMpStep(2);
+      startMpesaCountdown();
+      startMpesaPoll();
+    } else {
+      errEl.textContent = data.message || data.errorMessage || 'Failed to send STK push. Please try again.';
+      errEl.style.display = 'block';
+    }
+  } catch (e) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    errEl.textContent = 'Network error. Check your connection and try again.';
+    errEl.style.display = 'block';
+  }
+}
+
+function startMpesaCountdown() {
+  mpesaCountdownSecs = 60;
+  const countEl = document.getElementById('mpCountdown');
+  const fill = document.getElementById('mpTimerFill');
+  if (fill) fill.style.width = '100%';
+  clearInterval(mpesaCountdownTimer);
+  mpesaCountdownTimer = setInterval(() => {
+    mpesaCountdownSecs--;
+    if (countEl) countEl.textContent = mpesaCountdownSecs;
+    const pct = (mpesaCountdownSecs / 60) * 100;
+    if (fill) fill.style.width = pct + '%';
+    if (mpesaCountdownSecs <= 0) {
+      clearInterval(mpesaCountdownTimer);
+    }
+  }, 1000);
+}
+
+function startMpesaPoll() {
+  let attempts = 0;
+  const maxAttempts = 40;
+  clearInterval(mpesaPollInterval);
+
+  async function poll() {
+    attempts++;
+    try {
+      const statusEl = document.getElementById('mpPollStatus');
+
+      const resp = await fetch('https://mpesapi.giftedtech.co.ke/api/verify-transaction.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checkoutRequestId: mpesaCheckoutId })
+      });
+      const data = await resp.json();
+
+      if (data.success && data.status === 'completed') {
+        cancelMpesaPoll();
+        showPaymentSuccess(data.data);
+        return;
+      }
+
+      if (!data.success && data.status && data.status !== 'pending') {
+        cancelMpesaPoll();
+        showPaymentFailed(data.status, data.data);
+        return;
+      }
+
+      if (statusEl) statusEl.textContent = 'Waiting for payment confirmation...';
+
+    } catch (e) {
+      // silent, keep polling
+    }
+
+    if (attempts >= maxAttempts) {
+      cancelMpesaPoll();
+      showPaymentFailed('timeout', null);
+    }
+  }
+
+  setTimeout(poll, 1000);
+  mpesaPollInterval = setInterval(poll, 2000);
+}
+
+function cancelMpesaPoll() {
+  clearInterval(mpesaPollInterval);
+  clearInterval(mpesaCountdownTimer);
+  mpesaPollInterval = null;
+  mpesaCountdownTimer = null;
+}
+
+function showPaymentSuccess(data) {
+  showMpStep(3);
+  setEl('mpReceiptPlan', mpesaPlanName);
+  setEl('mpReceiptAmount', 'KSH ' + (data.Amount || mpesaAmount));
+  setEl('mpReceiptCode', data.MpesaReceiptNumber || '—');
+  const phone = data.PhoneNumber ? ('+' + data.PhoneNumber) : mpesaPhoneFormatted;
+  setEl('mpReceiptPhone', phone);
+
+  if (data.TransactionDate) {
+    const d = String(data.TransactionDate);
+    try {
+      const fmt = d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)+' '+d.slice(8,10)+':'+d.slice(10,12)+':'+d.slice(12,14);
+      setEl('mpReceiptDate', fmt);
+    } catch(e) { setEl('mpReceiptDate', d); }
+  } else {
+    setEl('mpReceiptDate', new Date().toLocaleString());
+  }
+}
+
+function showPaymentFailed(status, data) {
+  showMpStep(4);
+  const iconEl = document.getElementById('mpFailIcon');
+  const titleEl = document.getElementById('mpFailTitle');
+  const descEl = document.getElementById('mpFailDesc');
+
+  const messages = {
+    cancelled: { icon: '&#10005;', title: 'Payment Cancelled', desc: 'You cancelled the M-Pesa request. You can try again anytime.' },
+    failed_insufficient_funds: { icon: '&#128184;', title: 'Insufficient Funds', desc: 'Your M-Pesa balance is too low. Please top up and try again.' },
+    timeout: { icon: '&#9200;', title: 'Request Timed Out', desc: 'The STK push timed out or your phone couldn\'t be reached. Please try again.' },
+    failed: { icon: '&#10005;', title: 'Payment Failed', desc: (data && data.ResultDesc) || 'The payment could not be processed. Please try again.' }
+  };
+
+  const msg = messages[status] || messages.failed;
+  if (iconEl) iconEl.innerHTML = msg.icon;
+  if (titleEl) titleEl.textContent = msg.title;
+  if (descEl) descEl.textContent = msg.desc;
+}
+
+function retryMpesa() {
+  showMpStep(1);
+}
+
+
+const mpPhoneInput = document.getElementById('mpPhone');
+if (mpPhoneInput) {
+  mpPhoneInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendStkPush();
+  });
+}
 
 // ===================== COPY INSTALL CMD =====================
 function copyInstall() {
@@ -422,5 +638,9 @@ function startDeploy() {
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeDeployModal();
+  if (e.key !== 'Escape') return;
+  const mpModal = document.getElementById('mpesaModal');
+  if (mpModal && mpModal.classList.contains('open')) { closeMpesaModal(); return; }
+  const dModal = document.getElementById('deployModal');
+  if (dModal && dModal.classList.contains('open')) { closeDeployModal(); }
 });

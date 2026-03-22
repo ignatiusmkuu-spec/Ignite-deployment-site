@@ -828,6 +828,91 @@ h3 { font-size: 1.15rem; font-weight: 700; }
   min-height: 60px; max-height: 120px; overflow-y: auto;
 }
 
+/* ======================== KSH PRICING ======================== */
+.ksh-grid { grid-template-columns: repeat(3,1fr); }
+.price-currency { font-size: 1.3rem; font-weight: 800; color: var(--muted2); margin-right: 0.1rem; align-self: flex-start; padding-top: 0.5rem; }
+.price-renewal { font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); font-style: italic; }
+.trial-card { border-color: rgba(16,185,129,0.3); }
+.trial-card:hover { border-color: rgba(16,185,129,0.5); }
+.std-card { border-color: rgba(249,115,22,0.35); }
+.mpesa-pay-btn { margin-bottom: 0.75rem; }
+.mpesa-badge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--muted); }
+.mpesa-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; flex-shrink: 0; }
+.mpesa-trust {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2rem;
+  margin-top: 2.5rem; padding: 1.25rem 1.5rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.mt-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--muted2); }
+.mt-icon { font-size: 1rem; }
+
+/* ======================== M-PESA MODAL ======================== */
+.mpesa-modal { max-width: 440px; }
+.mpesa-modal-logo { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.mpesa-logo-circle {
+  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #fff; font-size: 1.5rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(16,185,129,0.35);
+}
+.mpesa-logo-text { font-weight: 800; font-size: 1rem; }
+.mpesa-plan-label { font-size: 0.8rem; color: var(--muted2); }
+.mpesa-amount-display {
+  text-align: center; margin: 0 0 1.5rem;
+  padding: 1rem; background: var(--bg);
+  border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-sm);
+}
+.mpesa-currency { font-size: 1.1rem; font-weight: 700; color: var(--muted2); margin-right: 0.25rem; }
+.mpesa-big-amount { font-size: 3rem; font-weight: 900; color: #4ade80; letter-spacing: -0.03em; }
+.mpesa-phone-field { margin-bottom: 1rem; }
+.mpesa-phone-row { display: flex; gap: 0; }
+.mpesa-prefix {
+  background: var(--bg2); border: 1.5px solid var(--border); border-right: none;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  padding: 0.7rem 0.9rem; font-size: 0.9rem; font-weight: 700;
+  color: var(--muted2); white-space: nowrap; flex-shrink: 0;
+}
+.mpesa-phone-row .cp-input { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.mpesa-error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: #f87171; border-radius: 6px; padding: 0.6rem 0.9rem; font-size: 0.82rem; margin-bottom: 1rem; }
+.mpesa-security-note { text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 0.75rem; }
+
+/* Waiting animation */
+.mpesa-wait-icon { position: relative; width: 80px; height: 80px; margin: 0 auto 1.5rem; }
+.mpesa-pulse-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 3px solid rgba(16,185,129,0.4);
+  animation: mpesaRing 1.5s ease-out infinite;
+}
+@keyframes mpesaRing { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+.mpesa-pulse-dot {
+  position: absolute; inset: 8px; border-radius: 50%;
+  background: rgba(16,185,129,0.15); border: 2px solid rgba(16,185,129,0.5);
+  display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+}
+.mpesa-wait-text { color: var(--muted2); font-size: 0.9rem; text-align: center; margin: 0.75rem 0 1.25rem; }
+.mpesa-wait-text strong { color: var(--text); }
+.mpesa-poll-status { display: flex; align-items: center; justify-content: center; gap: 0.6rem; font-size: 0.82rem; color: var(--muted2); margin-bottom: 0.75rem; }
+.mpesa-timer-bar { height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; margin: 0 0 0.4rem; }
+.mpesa-timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 99px; transition: width 1s linear; }
+.mpesa-timer-label { font-size: 0.75rem; color: var(--muted); text-align: center; }
+
+/* Result icons */
+.mpesa-result-icon {
+  width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 1.25rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 900;
+  background: rgba(248,113,113,0.15); color: #f87171;
+  border: 2px solid rgba(248,113,113,0.3);
+}
+.mpesa-result-icon.success-anim {
+  background: rgba(74,222,128,0.12); color: #4ade80;
+  border-color: rgba(74,222,128,0.3);
+  animation: successPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes successPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.mpesa-receipt { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1.25rem; }
+
 /* ======================== RESPONSIVE ======================== */
 @media (max-width: 1024px) {
   .features-grid { grid-template-columns: repeat(2,1fr); }
@@ -838,7 +923,8 @@ h3 { font-size: 1.15rem; font-weight: 700; }
   .hero-inner { grid-template-columns: 1fr; }
   .hero { min-height: auto; padding: 100px 0 60px; }
   .hero-sub { max-width: 100%; }
-  .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+  .pricing-grid, .ksh-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+  .mpesa-modal { max-width: 98vw; margin: 1rem; }
   .testi-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
   .footer-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .footer-links { grid-template-columns: repeat(2,1fr); }

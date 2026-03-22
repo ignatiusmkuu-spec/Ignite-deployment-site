@@ -616,69 +616,182 @@
     <div class="container">
       <div class="section-head">
         <div class="section-tag">Pricing</div>
-        <h2>Simple, transparent pricing</h2>
-        <p>No per-seat surprises. Pay for what you actually use.</p>
-        <div class="billing-toggle">
-          <span id="billingMonthly" class="billing-opt active">Monthly</span>
-          <div class="toggle-switch" id="billingToggle"><div class="toggle-knob"></div></div>
-          <span id="billingAnnual" class="billing-opt">Annual <span class="save-badge">Save 20%</span></span>
-        </div>
+        <h2>Simple M-Pesa pricing</h2>
+        <p>Pay securely with M-Pesa. Start for just <strong style="color:var(--green)">KSH 50</strong> your first month, then <strong style="color:var(--purple-light)">KSH 100/month</strong> thereafter.</p>
       </div>
-      <div class="pricing-grid">
-        <div class="plan-card">
-          <div class="plan-name">Starter</div>
+      <div class="pricing-grid ksh-grid">
+
+        <!-- Trial Plan -->
+        <div class="plan-card trial-card">
+          <div class="plan-name">First Month</div>
           <div class="plan-price">
-            <span class="price-amount" data-monthly="$0" data-annual="$0">$0</span>
-            <span class="price-period">/mo</span>
+            <span class="price-currency">KSH</span>
+            <span class="price-amount">50</span>
           </div>
-          <div class="plan-desc">Perfect for solo developers and side projects.</div>
+          <div class="price-renewal">Then KSH 100/month</div>
+          <div class="plan-desc">Try NexusBot at an unbeatable intro price. Full access from day one.</div>
           <ul class="plan-features">
-            <li><span class="pf-check">&#10003;</span> 3 environments</li>
-            <li><span class="pf-check">&#10003;</span> 50 deploys/month</li>
-            <li><span class="pf-check">&#10003;</span> GitHub &amp; GitLab</li>
-            <li><span class="pf-check">&#10003;</span> Community support</li>
-            <li class="pf-no"><span class="pf-x">&#215;</span> Custom domains</li>
-            <li class="pf-no"><span class="pf-x">&#215;</span> AI rollbacks</li>
+            <li><span class="pf-check">&#10003;</span> Full bot access</li>
+            <li><span class="pf-check">&#10003;</span> WhatsApp pairing</li>
+            <li><span class="pf-check">&#10003;</span> All commands &amp; features</li>
+            <li><span class="pf-check">&#10003;</span> Real-time notifications</li>
+            <li><span class="pf-check">&#10003;</span> Priority onboarding</li>
           </ul>
-          <a href="#get-started" class="btn btn-outline btn-block">Start Free</a>
+          <button class="btn btn-primary btn-block mpesa-pay-btn" onclick="openMpesaModal(50,'First Month Trial')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.44 4.56 16.94 4.07 14H6v-2H4.07C4.56 9.06 7.06 6.56 11 6.07V8h2V6.07c3.94.49 6.44 2.99 6.93 6.93H18v2h1.93c-.49 3.94-2.99 6.44-6.93 6.93z" fill="currentColor"/></svg>
+            Pay KSH 50 via M-Pesa
+          </button>
+          <div class="mpesa-badge"><span class="mpesa-dot"></span>M-Pesa STK Push — instant</div>
         </div>
-        <div class="plan-card plan-popular">
-          <div class="popular-badge">Most Popular</div>
-          <div class="plan-name">Pro</div>
+
+        <!-- Standard Plan -->
+        <div class="plan-card plan-popular std-card">
+          <div class="popular-badge">Standard Plan</div>
+          <div class="plan-name">Monthly</div>
           <div class="plan-price">
-            <span class="price-amount" data-monthly="$49" data-annual="$39">$49</span>
+            <span class="price-currency">KSH</span>
+            <span class="price-amount">100</span>
             <span class="price-period">/mo</span>
           </div>
-          <div class="plan-desc">For growing teams shipping fast.</div>
+          <div class="price-renewal">Billed monthly via M-Pesa</div>
+          <div class="plan-desc">Full NexusBot access, renewed each month. Cancel any time by simply not renewing.</div>
           <ul class="plan-features">
-            <li><span class="pf-check">&#10003;</span> Unlimited environments</li>
-            <li><span class="pf-check">&#10003;</span> Unlimited deploys</li>
-            <li><span class="pf-check">&#10003;</span> All integrations</li>
+            <li><span class="pf-check">&#10003;</span> Everything in Trial</li>
+            <li><span class="pf-check">&#10003;</span> Unlimited bot uptime</li>
             <li><span class="pf-check">&#10003;</span> AI-powered rollbacks</li>
-            <li><span class="pf-check">&#10003;</span> Custom domains</li>
+            <li><span class="pf-check">&#10003;</span> Multi-device support</li>
+            <li><span class="pf-check">&#10003;</span> WhatsApp group tools</li>
             <li><span class="pf-check">&#10003;</span> Priority support</li>
           </ul>
-          <a href="#get-started" class="btn btn-primary btn-block">Get Started</a>
+          <button class="btn btn-deploy btn-block mpesa-pay-btn" onclick="openMpesaModal(100,'Monthly Subscription')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.44 4.56 16.94 4.07 14H6v-2H4.07C4.56 9.06 7.06 6.56 11 6.07V8h2V6.07c3.94.49 6.44 2.99 6.93 6.93H18v2h1.93c-.49 3.94-2.99 6.44-6.93 6.93z" fill="currentColor"/></svg>
+            Pay KSH 100 via M-Pesa
+          </button>
+          <div class="mpesa-badge"><span class="mpesa-dot"></span>M-Pesa STK Push — instant</div>
         </div>
+
+        <!-- Enterprise -->
         <div class="plan-card">
           <div class="plan-name">Enterprise</div>
           <div class="plan-price">
-            <span class="price-amount" data-monthly="Custom" data-annual="Custom">Custom</span>
+            <span class="price-amount" style="font-size:2rem">Custom</span>
           </div>
-          <div class="plan-desc">For large teams with custom requirements.</div>
+          <div class="price-renewal">&nbsp;</div>
+          <div class="plan-desc">Bulk licenses, white-labeling, or custom deployment needs.</div>
           <ul class="plan-features">
-            <li><span class="pf-check">&#10003;</span> Everything in Pro</li>
-            <li><span class="pf-check">&#10003;</span> SSO &amp; SAML</li>
-            <li><span class="pf-check">&#10003;</span> Audit logs</li>
+            <li><span class="pf-check">&#10003;</span> Everything in Monthly</li>
+            <li><span class="pf-check">&#10003;</span> Bulk user licensing</li>
+            <li><span class="pf-check">&#10003;</span> White-label option</li>
             <li><span class="pf-check">&#10003;</span> SLA guarantees</li>
-            <li><span class="pf-check">&#10003;</span> Dedicated Slack channel</li>
-            <li><span class="pf-check">&#10003;</span> On-prem option</li>
+            <li><span class="pf-check">&#10003;</span> Dedicated support</li>
+            <li><span class="pf-check">&#10003;</span> On-prem deployment</li>
           </ul>
           <a href="#contact" class="btn btn-outline btn-block">Talk to Sales</a>
         </div>
+
+      </div>
+
+      <!-- Trust badges -->
+      <div class="mpesa-trust">
+        <div class="mt-item"><span class="mt-icon">&#128274;</span> SSL Encrypted</div>
+        <div class="mt-item"><span class="mt-icon">&#9989;</span> Instant activation</div>
+        <div class="mt-item"><span class="mt-icon">&#128241;</span> M-Pesa secure checkout</div>
+        <div class="mt-item"><span class="mt-icon">&#128260;</span> Cancel anytime</div>
       </div>
     </div>
   </section>
+
+  <!-- M-PESA PAYMENT MODAL -->
+  <div class="deploy-modal-overlay" id="mpesaModal" onclick="closeMpesaModalOutside(event)">
+    <div class="deploy-modal mpesa-modal" id="mpesaModalBox">
+      <button class="modal-close" onclick="closeMpesaModal()" id="mpesaCloseBtn">&times;</button>
+
+      <!-- Step 1: Enter phone -->
+      <div class="modal-step" id="mpStep1">
+        <div class="mpesa-modal-logo">
+          <div class="mpesa-logo-circle">M</div>
+          <div>
+            <div class="mpesa-logo-text">M-Pesa Payment</div>
+            <div class="mpesa-plan-label" id="mpPlanLabel">Monthly Subscription</div>
+          </div>
+        </div>
+        <div class="mpesa-amount-display">
+          <span class="mpesa-currency">KSH</span>
+          <span class="mpesa-big-amount" id="mpAmount">100</span>
+        </div>
+        <div class="mpesa-phone-field">
+          <label class="cp-label">M-Pesa Phone Number</label>
+          <div class="mpesa-phone-row">
+            <div class="mpesa-prefix">+254</div>
+            <input type="tel" class="cp-input" id="mpPhone" placeholder="7XX XXX XXX" maxlength="9" />
+          </div>
+          <p class="cp-hint">Must be a Safaricom number (07xx or 01xx). We'll format it automatically.</p>
+        </div>
+        <div class="mpesa-error" id="mpError" style="display:none"></div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeMpesaModal()">Cancel</button>
+          <button class="btn btn-primary" id="mpSendBtn" onclick="sendStkPush()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.44 4.56 16.94 4.07 14H6v-2H4.07C4.56 9.06 7.06 6.56 11 6.07V8h2V6.07c3.94.49 6.44 2.99 6.93 6.93H18v2h1.93c-.49 3.94-2.99 6.44-6.93 6.93z" fill="currentColor"/></svg>
+            Send STK Push
+          </button>
+        </div>
+        <p class="mpesa-security-note">&#128274; Payments processed securely by Gifted Tech M-Pesa API</p>
+      </div>
+
+      <!-- Step 2: Waiting / polling -->
+      <div class="modal-step" id="mpStep2" style="display:none">
+        <div class="mpesa-modal-logo">
+          <div class="mpesa-logo-circle">M</div>
+          <div>
+            <div class="mpesa-logo-text">M-Pesa Payment</div>
+            <div class="mpesa-plan-label" id="mpPlanLabel2">Monthly Subscription</div>
+          </div>
+        </div>
+        <div class="mpesa-wait-icon">
+          <div class="mpesa-pulse-ring"></div>
+          <div class="mpesa-pulse-dot">&#128241;</div>
+        </div>
+        <h3>Check Your Phone</h3>
+        <p class="mpesa-wait-text">An M-Pesa prompt has been sent to <strong id="mpDisplayPhone">0712 345 678</strong>.<br>Enter your M-Pesa PIN to complete payment.</p>
+        <div class="mpesa-poll-status">
+          <div class="pair-spinner" style="width:16px;height:16px;border-width:2px"></div>
+          <span id="mpPollStatus">Waiting for payment confirmation...</span>
+        </div>
+        <div class="mpesa-timer-bar"><div class="mpesa-timer-fill" id="mpTimerFill"></div></div>
+        <p class="mpesa-timer-label">This prompt will expire in <span id="mpCountdown">60</span>s</p>
+        <button class="btn btn-outline btn-sm" onclick="cancelMpesaPoll()" style="margin-top:1rem">Cancel</button>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div class="modal-step" id="mpStep3" style="display:none">
+        <div class="mpesa-result-icon success-anim">&#10003;</div>
+        <h3>Payment Successful!</h3>
+        <p>Your NexusBot subscription is now active. Thank you!</p>
+        <div class="mpesa-receipt">
+          <div class="modal-info-row"><span>Plan</span><code id="mpReceiptPlan">Monthly</code></div>
+          <div class="modal-info-row"><span>Amount</span><code id="mpReceiptAmount">KSH 100</code></div>
+          <div class="modal-info-row"><span>M-Pesa Receipt</span><code id="mpReceiptCode">—</code></div>
+          <div class="modal-info-row"><span>Phone</span><code id="mpReceiptPhone">—</code></div>
+          <div class="modal-info-row"><span>Date</span><code id="mpReceiptDate">—</code></div>
+        </div>
+        <div class="modal-actions" style="margin-top:1.5rem">
+          <button class="btn btn-primary" onclick="closeMpesaModal()">Done</button>
+          <a href="#connect" class="btn btn-outline" onclick="closeMpesaModal()">Connect Bot Now</a>
+        </div>
+      </div>
+
+      <!-- Step 4: Failed states -->
+      <div class="modal-step" id="mpStep4" style="display:none">
+        <div class="mpesa-result-icon" id="mpFailIcon">&#10005;</div>
+        <h3 id="mpFailTitle">Payment Failed</h3>
+        <p id="mpFailDesc">Something went wrong. Please try again.</p>
+        <div class="modal-actions" style="margin-top:1.5rem">
+          <button class="btn btn-outline" onclick="closeMpesaModal()">Close</button>
+          <button class="btn btn-primary" onclick="retryMpesa()">Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- TESTIMONIALS -->
   <section class="testimonials">

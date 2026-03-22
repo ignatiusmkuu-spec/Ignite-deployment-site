@@ -24,10 +24,11 @@
         <a href="#features" class="nav-link">Features</a>
         <a href="#howitworks" class="nav-link">How It Works</a>
         <a href="#commands" class="nav-link">Commands</a>
+        <a href="#control-panel" class="nav-link">Control Panel</a>
         <a href="#pricing" class="nav-link">Pricing</a>
         <a href="#docs" class="nav-link">Docs</a>
         <a href="#contact" class="btn btn-sm btn-outline">Contact</a>
-        <a href="#get-started" class="btn btn-sm btn-primary">Get Started</a>
+        <button class="btn btn-sm btn-deploy" onclick="openDeployModal()">&#9889; Deploy Now</button>
       </div>
       <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -48,13 +49,13 @@
         <h1>Deploy Smarter with <span class="gradient-text">NexusBot</span></h1>
         <p class="hero-sub">NexusBot automates your entire deployment pipeline — from CI/CD orchestration to zero-downtime releases, container scaling, and instant rollbacks. One bot to rule your infrastructure.</p>
         <div class="hero-actions">
-          <a href="#get-started" class="btn btn-primary btn-lg">
+          <button class="btn btn-deploy btn-lg" onclick="openDeployModal()">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-            Get Started Free
-          </a>
-          <a href="#demo" class="btn btn-ghost btn-lg">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M10 8l6 4-6 4V8z" fill="currentColor"/></svg>
-            Watch Demo
+            Deploy Now
+          </button>
+          <a href="#control-panel" class="btn btn-ghost btn-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/></svg>
+            Control Panel
           </a>
         </div>
         <div class="hero-stats">
@@ -111,6 +112,164 @@
       </div>
     </div>
   </section>
+
+  <!-- CONTROL PANEL -->
+  <section class="control-panel" id="control-panel">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Control Panel</div>
+        <h2>Bot Configuration</h2>
+        <p>Manage your NexusBot session, admin contact, and trigger deployments from one place.</p>
+      </div>
+      <div class="cp-layout">
+        <!-- Tabs panel -->
+        <div class="cp-panel">
+          <div class="cp-tabs">
+            <button class="cp-tab active" data-cptab="session">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Session ID
+            </button>
+            <button class="cp-tab" data-cptab="phone">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="2"/></svg>
+              Admin Phone
+            </button>
+          </div>
+
+          <!-- Session ID tab -->
+          <div class="cp-content active" id="cptab-session">
+            <div class="cp-field-group">
+              <label class="cp-label">Current Session ID</label>
+              <div class="cp-sid-display">
+                <span class="cp-sid-val" id="sidDisplay">NXB-<span id="sidValue">loading...</span></span>
+                <button class="cp-icon-btn" onclick="refreshSid()" title="Regenerate">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M23 4v6h-6M1 20v-6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="cp-icon-btn" onclick="copySid()" title="Copy" id="copySidBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/></svg>
+                </button>
+              </div>
+              <p class="cp-hint">This is your active bot session identifier. Regenerate to create a new secure session.</p>
+            </div>
+            <div class="cp-field-group">
+              <label class="cp-label">Session Variable Name</label>
+              <div class="cp-input-row">
+                <input type="text" class="cp-input" id="sidVarName" value="NEXUS_SESSION_ID" placeholder="Variable name" />
+                <button class="btn btn-sm btn-outline" onclick="saveSidVar()">Save</button>
+              </div>
+              <p class="cp-hint">The environment variable name used to pass the session ID into your deployment.</p>
+            </div>
+            <div class="cp-field-group">
+              <label class="cp-label">Session Status</label>
+              <div class="cp-status-row">
+                <span class="cp-status-dot active"></span>
+                <span class="cp-status-text" id="sessionStatus">Active &mdash; expires in 23h 47m</span>
+              </div>
+            </div>
+            <div class="cp-save-msg" id="sidSaveMsg" style="display:none">&#10003; Variable name saved.</div>
+          </div>
+
+          <!-- Admin Phone tab -->
+          <div class="cp-content" id="cptab-phone">
+            <div class="cp-field-group">
+              <label class="cp-label">Admin Phone Number</label>
+              <div class="cp-input-row">
+                <select class="cp-select cp-country" id="phoneCountry">
+                  <option value="+1">&#127482;&#127480; +1</option>
+                  <option value="+44">&#127468;&#127463; +44</option>
+                  <option value="+91">&#127470;&#127475; +91</option>
+                  <option value="+61">&#127462;&#127482; +61</option>
+                  <option value="+49">&#127465;&#127466; +49</option>
+                  <option value="+254">&#127472;&#127466; +254</option>
+                  <option value="+27">&#127487;&#127462; +27</option>
+                  <option value="+234">&#127475;&#127468; +234</option>
+                </select>
+                <input type="tel" class="cp-input" id="adminPhone" placeholder="712 345 6789" />
+              </div>
+              <p class="cp-hint">Receive SMS alerts for failed deployments, rollbacks, and security events.</p>
+            </div>
+            <div class="cp-field-group">
+              <label class="cp-label">Alert Notifications</label>
+              <div class="cp-toggles">
+                <label class="cp-toggle-row"><span>Deploy success</span><input type="checkbox" class="cp-checkbox" checked /><span class="cp-toggle-sw"></span></label>
+                <label class="cp-toggle-row"><span>Deploy failure</span><input type="checkbox" class="cp-checkbox" checked /><span class="cp-toggle-sw"></span></label>
+                <label class="cp-toggle-row"><span>Auto rollback triggered</span><input type="checkbox" class="cp-checkbox" checked /><span class="cp-toggle-sw"></span></label>
+                <label class="cp-toggle-row"><span>Scale events</span><input type="checkbox" class="cp-checkbox" /><span class="cp-toggle-sw"></span></label>
+              </div>
+            </div>
+            <div class="cp-actions">
+              <button class="btn btn-sm btn-primary" onclick="savePhone()">Save &amp; Verify</button>
+              <button class="btn btn-sm btn-outline" onclick="testSms()">Send Test SMS</button>
+            </div>
+            <div class="cp-save-msg" id="phoneSaveMsg" style="display:none"></div>
+          </div>
+        </div>
+
+        <!-- Deploy Now card -->
+        <div class="cp-deploy-card">
+          <div class="cp-deploy-icon">&#9889;</div>
+          <h3>Ready to Deploy?</h3>
+          <p>Trigger a deployment to your configured environment instantly. NexusBot will run all pre-flight checks automatically.</p>
+          <div class="cp-deploy-env">
+            <label class="cp-label">Target Environment</label>
+            <select class="cp-select" id="deployEnvSelect">
+              <option>production</option>
+              <option>staging</option>
+              <option>development</option>
+            </select>
+          </div>
+          <div class="cp-deploy-env">
+            <label class="cp-label">Image / Version Tag</label>
+            <input type="text" class="cp-input" id="deployTag" value="app:latest" placeholder="app:v1.0.0" />
+          </div>
+          <button class="btn btn-deploy btn-block deploy-pulse" onclick="openDeployModal()" style="margin-top:1.25rem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            Deploy Now
+          </button>
+          <div class="cp-last-deploy">
+            <span class="sc-dot green" style="width:7px;height:7px;display:inline-block"></span>
+            Last deploy: <strong>v2.4.1</strong> &mdash; 2 hours ago
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPLOY MODAL -->
+  <div class="deploy-modal-overlay" id="deployModal" onclick="closeDeployModalOutside(event)">
+    <div class="deploy-modal" id="deployModalBox">
+      <button class="modal-close" onclick="closeDeployModal()">&times;</button>
+      <div class="modal-step" id="mStep1">
+        <div class="modal-icon">&#9889;</div>
+        <h3>Confirm Deployment</h3>
+        <p>You are about to deploy to <strong id="mEnv">production</strong> using image <strong id="mTag">app:latest</strong>.</p>
+        <div class="modal-info-row"><span>Session ID</span><code id="mSid">NXB-...</code></div>
+        <div class="modal-info-row"><span>Environment</span><code id="mEnvCode">production</code></div>
+        <div class="modal-info-row"><span>Strategy</span><code>Rolling (zero-downtime)</code></div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeDeployModal()">Cancel</button>
+          <button class="btn btn-deploy" onclick="startDeploy()">Confirm &amp; Deploy</button>
+        </div>
+      </div>
+      <div class="modal-step" id="mStep2" style="display:none">
+        <div class="modal-icon spin">&#9881;</div>
+        <h3>Deploying&hellip;</h3>
+        <div class="modal-progress-bar"><div class="modal-progress-fill" id="mProgressFill"></div></div>
+        <p class="modal-progress-label" id="mProgressLabel">Authenticating with registry...</p>
+        <div class="modal-log" id="mLog"></div>
+      </div>
+      <div class="modal-step" id="mStep3" style="display:none">
+        <div class="modal-icon success">&#10003;</div>
+        <h3>Deployment Successful!</h3>
+        <p>Your application is live and all replicas are healthy.</p>
+        <div class="modal-info-row"><span>Version</span><code id="mFinalTag">app:latest</code></div>
+        <div class="modal-info-row"><span>Replicas</span><code>4 / 4 healthy</code></div>
+        <div class="modal-info-row"><span>Deploy time</span><code id="mDeployTime">0s</code></div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" onclick="closeDeployModal()">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- FEATURES -->
   <section class="features" id="features">

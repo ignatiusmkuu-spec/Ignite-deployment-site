@@ -22,8 +22,7 @@
       </a>
       <div class="nav-links" id="navLinks">
         <a href="#features" class="nav-link">Features</a>
-        <a href="#howitworks" class="nav-link">How It Works</a>
-        <a href="#commands" class="nav-link">Commands</a>
+        <a href="#connect" class="nav-link">Connect Bot</a>
         <a href="#control-panel" class="nav-link">Control Panel</a>
         <a href="#pricing" class="nav-link">Pricing</a>
         <a href="#docs" class="nav-link">Docs</a>
@@ -109,6 +108,160 @@
         <span class="tlogo">Notion</span>
         <span class="tlogo">Linear</span>
         <span class="tlogo">Figma</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONNECT YOUR BOT -->
+  <section class="connect-section" id="connect">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Connect Bot</div>
+        <h2>Pair Your WhatsApp Bot</h2>
+        <p>Link NEXUS-MD to your WhatsApp account using a Pair Code or QR Code — takes under 60 seconds.</p>
+      </div>
+      <div class="connect-layout">
+        <!-- Method tabs -->
+        <div class="connect-tabs">
+          <button class="connect-tab active" data-connect="paircode">
+            <span class="ct-num">1</span>
+            <div>
+              <strong>Pair Code</strong>
+              <span>Enter your phone number</span>
+            </div>
+          </button>
+          <button class="connect-tab" data-connect="qrcode">
+            <span class="ct-num">2</span>
+            <div>
+              <strong>QR Code</strong>
+              <span>Scan with WhatsApp camera</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Pair Code panel -->
+        <div class="connect-panel active" id="connect-paircode">
+          <div class="connect-card">
+            <div class="cc-header">
+              <div class="cc-icon purple">&#128241;</div>
+              <div>
+                <h3>Pair with Phone Number</h3>
+                <p>Generate a pair code and enter it on WhatsApp</p>
+              </div>
+            </div>
+            <div class="pair-steps">
+              <div class="pair-step-item done" id="psi1">
+                <div class="psi-num">1</div>
+                <div class="psi-body">
+                  <strong>Enter your WhatsApp number</strong>
+                  <div class="psi-input-row">
+                    <select class="cp-select cp-country" id="pairCountry">
+                      <option value="1">&#127482;&#127480; +1</option>
+                      <option value="44">&#127468;&#127463; +44</option>
+                      <option value="91">&#127470;&#127475; +91</option>
+                      <option value="61">&#127462;&#127482; +61</option>
+                      <option value="49">&#127465;&#127466; +49</option>
+                      <option value="254" selected>&#127472;&#127466; +254</option>
+                      <option value="27">&#127487;&#127462; +27</option>
+                      <option value="234">&#127475;&#127468; +234</option>
+                      <option value="55">&#127463;&#127479; +55</option>
+                      <option value="971">&#127462;&#127466; +971</option>
+                    </select>
+                    <input type="tel" class="cp-input" id="pairPhoneInput" placeholder="712 345 6789" maxlength="15" />
+                  </div>
+                </div>
+              </div>
+              <div class="pair-step-item" id="psi2">
+                <div class="psi-num">2</div>
+                <div class="psi-body">
+                  <strong>Generate your pair code</strong>
+                  <button class="btn btn-primary" id="generatePairBtn" onclick="generatePairCode()" style="margin-top:0.6rem">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+                    Generate Pair Code
+                  </button>
+                  <div class="pair-loading" id="pairLoading" style="display:none">
+                    <div class="pair-spinner"></div> Connecting to WhatsApp...
+                  </div>
+                  <div class="pair-code-box" id="pairCodeBox" style="display:none">
+                    <span class="pair-code-label">Your Pair Code</span>
+                    <div class="pair-code-value" id="pairCodeValue">----</div>
+                    <button class="copy-btn" onclick="copyPairCode()">Copy</button>
+                  </div>
+                  <div class="pair-error" id="pairError" style="display:none"></div>
+                </div>
+              </div>
+              <div class="pair-step-item" id="psi3">
+                <div class="psi-num">3</div>
+                <div class="psi-body">
+                  <strong>Enter code on WhatsApp</strong>
+                  <p class="psi-hint">Open WhatsApp &rarr; Linked Devices &rarr; Link with phone number &rarr; Enter the code above</p>
+                </div>
+              </div>
+              <div class="pair-step-item" id="psi4">
+                <div class="psi-num">4</div>
+                <div class="psi-body">
+                  <strong>Save your Session ID</strong>
+                  <p class="psi-hint">Once paired, your session ID will auto-populate in the Control Panel below.</p>
+                  <div class="pair-code-box session-save-box" id="sessionSaveBox" style="display:none">
+                    <span class="pair-code-label">Session ID</span>
+                    <div class="pair-code-value session-id-display" id="sessionIdDisplay">—</div>
+                    <button class="btn btn-sm btn-primary" onclick="saveSessionFromPair()">Save to Control Panel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR Code panel -->
+        <div class="connect-panel" id="connect-qrcode">
+          <div class="connect-card">
+            <div class="cc-header">
+              <div class="cc-icon blue">&#128247;</div>
+              <div>
+                <h3>Pair with QR Code</h3>
+                <p>Scan the code below with your WhatsApp camera</p>
+              </div>
+            </div>
+            <div class="qr-wrapper">
+              <div class="qr-box" id="qrBox">
+                <div class="qr-loading" id="qrLoading">
+                  <div class="pair-spinner"></div>
+                  <p>Loading QR code...</p>
+                </div>
+                <img class="qr-img" id="qrImg" src="" alt="WhatsApp QR Code" style="display:none" />
+                <div class="qr-error" id="qrError" style="display:none"></div>
+              </div>
+              <div class="qr-instructions">
+                <div class="qi-step"><span class="qi-num">1</span>Open <strong>WhatsApp</strong> on your phone</div>
+                <div class="qi-step"><span class="qi-num">2</span>Tap <strong>Linked Devices</strong> &rarr; <strong>Link a Device</strong></div>
+                <div class="qi-step"><span class="qi-num">3</span>Point your camera at the QR code</div>
+                <div class="qi-step"><span class="qi-num">4</span>Wait for pairing confirmation</div>
+              </div>
+            </div>
+            <div class="qr-actions">
+              <button class="btn btn-outline" onclick="refreshQR()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M23 4v6h-6M1 20v-6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Refresh QR
+              </button>
+              <a href="https://nexs-session-1.replit.app/qr" target="_blank" class="btn btn-ghost">Open Full Page &#8599;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status bar -->
+      <div class="pairing-status-bar">
+        <div class="psb-item">
+          <span class="sc-dot green" style="width:8px;height:8px;display:inline-block"></span>
+          Pairing server online
+        </div>
+        <div class="psb-divider"></div>
+        <div class="psb-item">&#128274; End-to-end encrypted</div>
+        <div class="psb-divider"></div>
+        <div class="psb-item">&#9889; Powered by NEXUS-MD</div>
+        <div class="psb-divider"></div>
+        <a class="psb-item psb-link" href="https://nexs-session-1.replit.app" target="_blank">Open full pairing site &#8599;</a>
       </div>
     </div>
   </section>
